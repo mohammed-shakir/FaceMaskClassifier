@@ -5,10 +5,10 @@ import pickle
 import random
 
 # Data
-data = "images"
+data = "dataset"
 
 # Categories
-categories = ["type1", "type2"]
+categories = ["with_mask", "without_mask"]
 
 # Image size
 img_size = 50
