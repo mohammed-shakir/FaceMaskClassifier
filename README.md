@@ -6,3 +6,5 @@
   - Email: `androa-0@student.ltu.se`
 - **Mohammed Shakir**
   - Email: `mohsha-0@student.ltu.se`
+
+Dataset: https://www.kaggle.com/datasets/omkargurav/face-mask-dataset/

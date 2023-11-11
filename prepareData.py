@@ -4,60 +4,47 @@ import numpy as np
 import pickle
 import random
 
-# Data
 data = "dataset"
-
-# Categories
 categories = ["with_mask", "without_mask"]
-
-# Image size
 img_size = 50
-
-# Training data
 training_data = []
-
-# Images
-X = []
-
-# Labels
-y = []
-
+images_x = []
+labels_y = []
 
 def create_training_data():
-    # Create training data
     for category in categories:
         path = os.path.join(data, category)
+        if not os.path.exists(path):
+            raise ValueError(f"Path {path} does not exist")
+
         class_num = categories.index(category)
         for img in os.listdir(path):
             try:
-                img_array = cv2.imread(os.path.join(
-                    path, img), cv2.IMREAD_GRAYSCALE)
+                img_path = os.path.join(path, img)
+                img_array = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+                if img_array is None:
+                    raise ValueError(f"Unable to read image {img_path}")
+
                 new_array = cv2.resize(img_array, (img_size, img_size))
                 training_data.append([new_array, class_num])
             except Exception as e:
-                pass
-
+                print(f"Error reading image {img_path}: {e}")
 
 create_training_data()
 
-# Shuffle images
 random.shuffle(training_data)
 
-# Set X as images and y as labels
 for features, label in training_data:
-    X.append(features)
-    y.append(label)
+    images_x.append(features)
+    labels_y.append(label)
 
-# Convert X and y to a numpy array
-X = np.array(X).reshape(-1, img_size, img_size, 1)
-y = np.array(y)
+images_x = np.array(images_x).reshape(-1, img_size, img_size, 1)
+labels_y = np.array(labels_y)
 
-# Save X
-pickle_out = open("X.pickle", "wb")
-pickle.dump(X, pickle_out)
-pickle_out.close()
+# Save images_x
+with open("images_x.pickle", "wb") as pickle_out:
+    pickle.dump(images_x, pickle_out)
 
-# Save y
-pickle_out = open("y.pickle", "wb")
-pickle.dump(y, pickle_out)
-pickle_out.close()
+# Save labels_y
+with open("labels_y.pickle", "wb") as pickle_out:
+    pickle.dump(labels_y, pickle_out)

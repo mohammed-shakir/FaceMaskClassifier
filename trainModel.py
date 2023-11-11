@@ -1,37 +1,42 @@
-import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
 from tensorflow.keras.callbacks import TensorBoard
-import cv2
 import pickle
-import numpy as np
 import time
 
 # Load data
-X = pickle.load(open("X.pickle", "rb"))
-y = pickle.load(open("y.pickle", "rb"))
+try:
+    with open("images_x.pickle", "rb") as file:
+        images_x = pickle.load(file)
+    with open("labels_y.pickle", "rb") as file:
+        labels_y = pickle.load(file)
+except Exception as e:
+    print(f"Error loading data: {e}")
+    exit()
 
-# Pixels
-X = X/255.0
+images_x = images_x/255.0
 
 # Layers
 dense_layers = [1]
-layer_sizes = [64]
-conv_layers = [2]
+layer_sizes = [128]
+conv_layers = [3]
+epochs = [10, 20, 30, 50, 100]
 
 # Create the convolutional neural network
 for dense_layer in dense_layers:
     for layer_size in layer_sizes:
         for conv_layer in conv_layers:
             # tensorboard --logdir=logs\\
-            # name = "{}-conv-{}-nodes-{}-dense-{}".format(conv_layer, layer_size, dense_layer, int(time.time()))
+            name = "{}-conv-{}-nodes-{}-dense-{}".format(conv_layer, layer_size, dense_layer, int(time.time()))
+            print(name)
             # tensorboard = TensorBoard(log_dir="logs\\{}".format(name))
-            # callbacks=[tensorboard]
+            tensorboard = TensorBoard(log_dir=f"logs/{name}")
+            callbacks=[tensorboard]
 
             model = Sequential()
 
             # Convolutional Layer
-            model.add(Conv2D(layer_size, (3, 3), input_shape=X.shape[1:]))
+            model.add(Conv2D(layer_size, (3, 3), input_shape=images_x.shape[1:]))
             model.add(Activation('relu'))
             model.add(MaxPooling2D(pool_size=(2, 2)))
 
@@ -54,12 +59,9 @@ for dense_layer in dense_layers:
             model.add(Dense(1))
             model.add(Activation('sigmoid'))
 
-            # Compile
             model.compile(loss='binary_crossentropy',
                           optimizer='adam', metrics=['accuracy'])
 
-            # Train model
-            model.fit(X, y, batch_size=32, epochs=10, validation_split=0.1)
+            model.fit(images_x, labels_y, batch_size=32, epochs=10, validation_split=0.1, callbacks=callbacks)
 
-# Save model
 model.save("model.h5")
