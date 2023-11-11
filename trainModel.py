@@ -20,7 +20,7 @@ images_x = images_x/255.0
 dense_layers = [1] # Tested with 0, 1, 2
 layer_sizes = [128] # Tested with 32, 64, 128
 conv_layers = [3] # Tested with 1, 2, 3
-epochs = [10, 20, 30, 50] # Tested with 10, 20, 30, 50, 100
+epochs = [10] # Tested with 10, 20, 30, 50, 100
 
 # Create the convolutional neural network
 for dense_layer in dense_layers:
