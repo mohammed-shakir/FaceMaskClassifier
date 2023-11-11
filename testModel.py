@@ -1,14 +1,9 @@
 import cv2
 import tensorflow as tf
 import os
-import math
 
-cap = cv2.VideoCapture(0)
-frameRate = cap.get(2)
-imagesDirectory = r'C:\xampp\htdocs\github\gymnasiearbete\ml\image'
-modelDirectory = r'C:\xampp\htdocs\github\gymnasiearbete\ml'
+# Categories
 categories = ["type1", "type2"]
-model = tf.keras.models.load_model("model.h5")
 
 
 def prepare(filepath):
@@ -30,23 +25,12 @@ def prepare_all(dir):
     return x_test, y_test, files
 
 
-while True:
-    frameId = cap.get(1)
-    ret, frame = cap.read()
+# Load model
+model = tf.keras.models.load_model("model.h5")
 
-    if (ret != True):
-        break
-
-    if (frameId % math.floor(frameRate) == 0):
-        os.chdir(imagesDirectory)
-        filename = "Image.jpg"
-        cv2.imwrite(filename, frame)
-
-    os.chdir(modelDirectory)
-    x_test, y_test, test_files = prepare_all("image/")
-    for i in range(0, len(x_test)):
-        prediction = model.predict(x_test[i])
-        print(categories[1 if prediction[0][0] > 0.5 else 0])
-
-cap.release()
-cv2.destroyAllWindows()
+# Test model images
+x_test, y_test, test_files = prepare_all("testImages/")
+for i in range(0, len(x_test)):
+    prediction = model.predict(x_test[i])
+    print("Prediction: ", categories[1 if prediction[0][0] > 0.5 else 0], ": Correct is",
+          y_test[i])
