@@ -28,7 +28,7 @@ for dense_layer in dense_layers:
         for conv_layer in conv_layers:
             for epoch in epochs:
                 # tensorboard --logdir=logs\\
-                name = "{}-conv-{}-nodes-{}-dense-{}".format(conv_layer, layer_size, dense_layer, int(time.time()))
+                name = "{}-conv-{}-nodes-{}-dense-{}-epochs{}".format(conv_layer, layer_size, dense_layer, epoch, int(time.time()))
                 print(name)
                 tensorboard = TensorBoard(log_dir=f"logs/{name}")
                 callbacks=[tensorboard]
