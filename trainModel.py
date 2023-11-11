@@ -26,7 +26,7 @@ epochs = [10] # Tested with 10, 20, 30, 50, 100
 for dense_layer in dense_layers:
     for layer_size in layer_sizes:
         for conv_layer in conv_layers:
-            for epoch in epochs:
+            for e in epochs:
                 # tensorboard --logdir=logs\\
                 name = "{}-conv-{}-nodes-{}-dense-{}".format(conv_layer, layer_size, dense_layer, int(time.time()))
                 print(name)
@@ -62,6 +62,6 @@ for dense_layer in dense_layers:
                 model.compile(loss='binary_crossentropy',
                             optimizer='adam', metrics=['accuracy'])
 
-                model.fit(images_x, labels_y, batch_size=32, epoch=epoch, validation_split=0.1, callbacks=callbacks)
+                model.fit(images_x, labels_y, batch_size=32, epoch=e, validation_split=0.1, callbacks=callbacks)
 
 model.save("model.h5")
