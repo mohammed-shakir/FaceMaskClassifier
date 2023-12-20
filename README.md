@@ -1,6 +1,6 @@
 # D7041E - Face Mask Classifier using CNN
 
-## Group 69
+## Group 7
 
 - **André Roaas**
   - Email: `androa-0@student.ltu.se`
