@@ -9,7 +9,7 @@
 
 Dataset: https://www.kaggle.com/datasets/omkargurav/face-mask-dataset/
 
-Demo: github.com/mohammed-shakir/FaceMaskClassifier
+Video: [github.com/mohammed-shakir/FaceMaskClassifier](https://www.youtube.com/watch?v=hK_IGEt2Gxg)
 
 ## Instructions
 
